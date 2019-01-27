@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PasswordManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AppUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="PasswordManager" Relationship="Self.FK__PasswordM__UserI__25869641" FromRole="AppUser" ToRole="PasswordManager" />
+  </EntityType>
+  <EntityType Name="PasswordManager">
+    <Key>
+      <PropertyRef Name="PasswordManagerId" />
+    </Key>
+    <Property Name="PasswordManagerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SiteName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="AppUser" Relationship="Self.FK__PasswordM__UserI__25869641" FromRole="PasswordManager" ToRole="AppUser" />
+  </EntityType>
+  <Association Name="FK__PasswordM__UserI__25869641">
+    <End Role="AppUser" Type="Self.AppUser" Multiplicity="0..1" />
+    <End Role="PasswordManager" Type="Self.PasswordManager" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AppUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="PasswordManager">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PasswordManagerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AppUser" EntityType="Self.AppUser" />
+    <EntitySet Name="PasswordManager" EntityType="Self.PasswordManager" />
+    <AssociationSet Name="FK__PasswordM__UserI__25869641" Association="Self.FK__PasswordM__UserI__25869641">
+      <End Role="AppUser" EntitySet="AppUser" />
+      <End Role="PasswordManager" EntitySet="PasswordManager" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
